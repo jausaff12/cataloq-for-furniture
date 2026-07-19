@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kairaly Furniture - Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, Arial, sans-serif; margin: 0; background: #f7f5f2; color: #222; }
+  header { background: #2b2118; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+  header a { color: #ddd; font-size: 14px; text-decoration: none; }
+  main { max-width: 1000px; margin: 0 auto; padding: 24px; }
+
+  #login-box { max-width: 340px; margin: 80px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.1); }
+  #login-box h2 { margin-top: 0; }
+  #login-box input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+  #login-box button, .btn { padding: 10px 16px; background: #6b4f3b; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+  #login-box button:hover, .btn:hover { background: #543d2d; }
+  .error { color: #c0392b; font-size: 13px; margin-bottom: 10px; }
+
+  #panel { display: none; }
+  .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .btn-secondary { background: #888; }
+
+  table.list { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; }
+  table.list th, table.list td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
+  table.list th { background: #efe9e2; }
+  table.list img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+  .actions button { margin-right: 6px; font-size: 12px; padding: 5px 8px; }
+
+  form#product-form { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 24px; display: none; }
+  form#product-form h3 { margin-top: 0; }
+  .field-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .field-grid label { font-size: 13px; color: #555; display: block; margin-bottom: 4px; }
+  .field-grid input, .field-grid select, .field-grid textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+  .full-width { grid-column: 1 / -1; }
+  form#product-form .form-actions { margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<header>
+  <strong>Kairaly Furniture - Admin</strong>
+  <a href="index.html">Back to Catalog</a>
+</header>
+
+<main>
+  <!-- Login -->
+  <div id="login-box">
+    <h2>Admin Login</h2>
+    <div id="login-error" class="error" style="display:none"></div>
+    <input type="text" id="username" placeholder="Username" autocomplete="username">
+    <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+    <button onclick="login()">Log In</button>
+  </div>
+
+  <!-- Admin panel -->
+  <div id="panel">
+    <div class="row">
+      <h2>Manage Sofas</h2>
+      <div>
+        <button class="btn" onclick="showForm()">+ Add Sofa</button>
+        <button class="btn btn-secondary" onclick="logout()">Log Out</button>
+      </div>
+    </div>
+
+    <form id="product-form" onsubmit="return saveProduct(event)">
+      <h3 id="form-title">Add Sofa</h3>
+      <input type="hidden" id="product-id">
+      <div class="field-grid">
+        <div><label>Name *</label><input id="f-name" required></div>
+        <div><label>Price (₹) *</label><input id="f-price" type="number" step="0.01" min="0.01" required></div>
+        <div><label>Branch *</label><select id="f-branch" required></select></div>
+        <div><label>Stock Count</label><input id="f-stock" type="number" min="0" value="0"></div>
+        <div><label>Length (cm)</label><input id="f-length" type="number" step="0.1"></div>
+        <div><label>Width (cm)</label><input id="f-width" type="number" step="0.1"></div>
+        <div><label>Height (cm)</label><input id="f-height" type="number" step="0.1"></div>
+        <div><label>Seating Capacity</label><input id="f-seating" type="number" min="1" max="20"></div>
+        <div><label>Foam Thickness (cm)</label><input id="f-foam-thickness" type="number" step="0.1"></div>
+        <div><label>Foam Type</label><input id="f-foam-type"></div>
+        <div><label>Fabric Material</label><input id="f-fabric"></div>
+        <div><label>Frame Material</label><input id="f-frame"></div>
+        <div><label>Color</label><input id="f-color"></div>
+        <div><label>Warranty</label><input id="f-warranty" placeholder="e.g. 2 Years"></div>
+        <div class="full-width"><label>Available Colors (comma separated)</label><input id="f-colors" placeholder="Grey, Beige, Navy Blue"></div>
+        <div class="full-width"><label>Description</label><textarea id="f-description" rows="3"></textarea></div>
+        <div class="full-width"><label>Images</label><input id="f-images" type="file" multiple accept="image/*"></div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn">Save</button>
+        <button type="button" class="btn btn-secondary" onclick="hideForm()">Cancel</button>
+      </div>
+    </form>
+
+    <table class="list">
+      <thead>
+        <tr><th>Image</th><th>Name</th><th>Price</th><th>Branch</th><th>Stock</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="product-rows"></tbody>
+    </table>
+  </div>
+</main>
+
+<script src="config.js"></script>
+<script>
+let token = null;
+let branches = [];
+
+function authHeaders(extra = {}) {
+  return { Authorization: `Bearer ${token}`, ...extra };
+}
+
+async function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const errBox = document.getElementById('login-error');
+  errBox.style.display = 'none';
+
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+  });
+  if (!res.ok) {
+    errBox.textContent = 'Invalid username or password.';
+    errBox.style.display = 'block';
+    return;
+  }
+  const data = await res.json();
+  token = data.access_token;
+  document.getElementById('login-box').style.display = 'none';
+  document.getElementById('panel').style.display = 'block';
+  await loadBranches();
+  await loadProducts();
+}
+
+function logout() {
+  token = null;
+  document.getElementById('panel').style.display = 'none';
+  document.getElementById('login-box').style.display = 'block';
+}
+
+async function loadBranches() {
+  const res = await fetch(`${API_BASE}/branches`);
+  branches = await res.json();
+  const select = document.getElementById('f-branch');
+  select.innerHTML = branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+}
+
+async function loadProducts() {
+  const res = await fetch(`${API_BASE}/admin/products?page_size=100`, { headers: authHeaders() });
+  if (res.status === 401) return logout();
+  const data = await res.json();
+  const rows = document.getElementById('product-rows');
+  rows.innerHTML = data.items.map(p => `
+    <tr>
+      <td><img src="${imgUrl(p.primary_image)}"></td>
+      <td>${p.name}</td>
+      <td>₹${p.price.toLocaleString('en-IN')}</td>
+      <td>${p.branch.name}</td>
+      <td>${p.stock_count} <em>(${p.stock_status})</em></td>
+      <td class="actions">
+        <button class="btn" onclick="editProduct(${p.id})">Edit</button>
+        <button class="btn btn-secondary" onclick="promptStock(${p.id}, ${p.stock_count})">Stock</button>
+        <button class="btn btn-secondary" onclick="deleteProduct(${p.id})">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function imgUrl(path) {
+  if (!path) return 'https://placehold.co/60x60?text=—';
+  return path.startsWith('http') ? path : `${API_BASE.replace('/api/v1', '')}${path}`;
+}
+
+function showForm() {
+  document.getElementById('product-form').style.display = 'block';
+  document.getElementById('form-title').textContent = 'Add Sofa';
+  document.getElementById('product-id').value = '';
+  ['name','price','stock','length','width','height','seating','foam-thickness','foam-type','fabric','frame','color','warranty','colors','description']
+    .forEach(f => document.getElementById(`f-${f}`).value = '');
+}
+
+function hideForm() {
+  document.getElementById('product-form').style.display = 'none';
+}
+
+async function editProduct(id) {
+  const res = await fetch(`${API_BASE}/products/${id}`);
+  const p = await res.json();
+  showForm();
+  document.getElementById('form-title').textContent = 'Edit Sofa';
+  document.getElementById('product-id').value = p.id;
+  document.getElementById('f-name').value = p.name;
+  document.getElementById('f-price').value = p.price;
+  document.getElementById('f-branch').value = p.branch.id;
+  document.getElementById('f-stock').value = p.stock_count;
+  document.getElementById('f-length').value = p.length_cm ?? '';
+  document.getElementById('f-width').value = p.width_cm ?? '';
+  document.getElementById('f-height').value = p.height_cm ?? '';
+  document.getElementById('f-seating').value = p.seating_capacity ?? '';
+  document.getElementById('f-foam-thickness').value = p.foam_thickness_cm ?? '';
+  document.getElementById('f-foam-type').value = p.foam_type ?? '';
+  document.getElementById('f-fabric').value = p.fabric_material ?? '';
+  document.getElementById('f-frame').value = p.frame_material ?? '';
+  document.getElementById('f-color').value = p.color ?? '';
+  document.getElementById('f-warranty').value = p.warranty ?? '';
+  document.getElementById('f-colors').value = (p.available_colors || []).join(', ');
+  document.getElementById('f-description').value = p.description ?? '';
+}
+
+async function saveProduct(event) {
+  event.preventDefault();
+  const id = document.getElementById('product-id').value;
+  const colorsRaw = document.getElementById('f-colors').value;
+  const payload = {
+    name: document.getElementById('f-name').value,
+    price: parseFloat(document.getElementById('f-price').value),
+    branch_id: parseInt(document.getElementById('f-branch').value),
+    stock_count: parseInt(document.getElementById('f-stock').value || '0'),
+    length_cm: numOrNull('f-length'),
+    width_cm: numOrNull('f-width'),
+    height_cm: numOrNull('f-height'),
+    seating_capacity: numOrNull('f-seating'),
+    foam_thickness_cm: numOrNull('f-foam-thickness'),
+    foam_type: strOrNull('f-foam-type'),
+    fabric_material: strOrNull('f-fabric'),
+    frame_material: strOrNull('f-frame'),
+    color: strOrNull('f-color'),
+    warranty: strOrNull('f-warranty'),
+    description: strOrNull('f-description'),
+    available_colors: colorsRaw ? colorsRaw.split(',').map(c => c.trim()).filter(Boolean) : null,
+  };
+
+  const url = id ? `${API_BASE}/admin/products/${id}` : `${API_BASE}/admin/products`;
+  const method = id ? 'PUT' : 'POST';
+  const res = await fetch(url, {
+    method,
+    headers: authHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    alert('Error saving product: ' + JSON.stringify(err.detail));
+    return false;
+  }
+  const saved = await res.json();
+
+  const files = document.getElementById('f-images').files;
+  if (files.length > 0) {
+    const formData = new FormData();
+    for (const file of files) formData.append('files', file);
+    await fetch(`${API_BASE}/admin/products/${saved.id}/images`, {
+      method: 'POST',
+      headers: authHeaders(),
+      body: formData,
+    });
+  }
+
+  hideForm();
+  await loadProducts();
+  return false;
+}
+
+function numOrNull(id) {
+  const v = document.getElementById(id).value;
+  return v === '' ? null : parseFloat(v);
+}
+function strOrNull(id) {
+  const v = document.getElementById(id).value.trim();
+  return v === '' ? null : v;
+}
+
+async function promptStock(id, current) {
+  const value = prompt('New stock count:', current);
+  if (value === null) return;
+  const stock_count = parseInt(value);
+  if (isNaN(stock_count) || stock_count < 0) return alert('Enter a valid non-negative number.');
+  await fetch(`${API_BASE}/admin/products/${id}/stock`, {
+    method: 'PATCH',
+    headers: authHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ stock_count }),
+  });
+  await loadProducts();
+}
+
+async function deleteProduct(id) {
+  if (!confirm('Delete this sofa? This cannot be undone.')) return;
+  await fetch(`${API_BASE}/admin/products/${id}`, { method: 'DELETE', headers: authHeaders() });
+  await loadProducts();
+}
+</script>
+</body>
+</html>

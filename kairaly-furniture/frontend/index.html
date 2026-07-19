@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kairaly Furniture - Sofa Catalog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, Arial, sans-serif; margin: 0; background: #f7f5f2; color: #222; }
+  header { background: #2b2118; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+  header a { color: #ddd; font-size: 14px; text-decoration: none; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+  #branch-gate { text-align: center; padding: 80px 20px; }
+  #branch-gate h1 { font-size: 22px; margin-bottom: 30px; }
+  .branch-btn { font-size: 16px; padding: 14px 28px; margin: 0 10px; border: none; border-radius: 6px; background: #6b4f3b; color: #fff; cursor: pointer; }
+  .branch-btn:hover { background: #543d2d; }
+
+  #catalog { display: none; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; align-items: center; }
+  .toolbar input, .toolbar select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+  .toolbar input[type=text] { flex: 1; min-width: 160px; }
+  .toolbar .price-range { display: flex; gap: 6px; align-items: center; }
+  .toolbar .price-range input { width: 90px; }
+
+  .current-branch { font-size: 13px; color: #666; margin-bottom: 14px; }
+  .current-branch button { margin-left: 10px; background: none; border: none; color: #6b4f3b; text-decoration: underline; cursor: pointer; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+  .card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); cursor: pointer; }
+  .card img { width: 100%; height: 180px; object-fit: cover; background: #e8e4de; }
+  .card-body { padding: 12px; }
+  .card-body h3 { margin: 0 0 6px; font-size: 15px; }
+  .price { font-weight: bold; color: #6b4f3b; }
+  .branch-tag { font-size: 12px; color: #888; margin-top: 4px; }
+  .stock { display: inline-block; margin-top: 6px; font-size: 12px; padding: 3px 8px; border-radius: 10px; }
+  .in-stock { background: #e3f5e6; color: #1c7a34; }
+  .made-to-order { background: #fdf1dd; color: #a5680c; }
+
+  .empty { text-align: center; padding: 60px; color: #888; }
+
+  /* Modal */
+  #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); align-items: center; justify-content: center; padding: 20px; z-index: 10; }
+  #modal { background: #fff; max-width: 780px; width: 100%; max-height: 90vh; overflow-y: auto; border-radius: 8px; padding: 24px; position: relative; }
+  #modal .close { position: absolute; top: 14px; right: 18px; cursor: pointer; font-size: 20px; background: none; border: none; }
+  #modal .images { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; }
+  #modal .images img { height: 220px; border-radius: 6px; object-fit: cover; }
+  #modal h2 { margin: 0 0 6px; }
+  #modal table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+  #modal table td { padding: 6px 4px; border-bottom: 1px solid #eee; }
+  #modal table td:first-child { color: #777; width: 40%; }
+  .colors { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .color-chip { padding: 3px 10px; border-radius: 12px; background: #f0ece6; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <strong>Kairaly Furniture</strong>
+  <a href="admin.html">Admin Login</a>
+</header>
+
+<main>
+  <!-- Step 1: Branch gate -->
+  <div id="branch-gate">
+    <h1>Which branch are you currently visiting?</h1>
+    <div id="branch-buttons">Loading branches...</div>
+  </div>
+
+  <!-- Step 2: Catalog -->
+  <div id="catalog">
+    <div class="current-branch">
+      You're browsing from <strong id="current-branch-name"></strong> —
+      showing sofas available at our other branch.
+      <button onclick="resetBranch()">Change branch</button>
+    </div>
+
+    <div class="toolbar">
+      <input type="text" id="search" placeholder="Search sofas by name...">
+      <select id="sort">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="price_low_to_high">Price: Low to High</option>
+        <option value="price_high_to_low">Price: High to Low</option>
+      </select>
+      <div class="price-range">
+        <input type="number" id="min_price" placeholder="Min ₹">
+        <span>-</span>
+        <input type="number" id="max_price" placeholder="Max ₹">
+      </div>
+      <input type="text" id="fabric" placeholder="Fabric (e.g. Velvet)" style="width:150px">
+      <input type="text" id="foam_type" placeholder="Foam type" style="width:150px">
+      <button onclick="loadProducts()">Apply</button>
+    </div>
+
+    <div id="grid" class="grid"></div>
+    <div id="empty" class="empty" style="display:none">No sofas match your filters.</div>
+  </div>
+</main>
+
+<!-- Product detail modal -->
+<div id="overlay" onclick="if(event.target===this) closeModal()">
+  <div id="modal"></div>
+</div>
+
+<script src="config.js"></script>
+<script>
+let currentBranch = null; // the branch the customer is standing in
+
+async function init() {
+  const res = await fetch(`${API_BASE}/branches`);
+  const branches = await res.json();
+  const container = document.getElementById('branch-buttons');
+  container.innerHTML = '';
+  branches.forEach(b => {
+    const btn = document.createElement('button');
+    btn.className = 'branch-btn';
+    btn.textContent = b.name;
+    btn.onclick = () => selectBranch(b);
+    container.appendChild(btn);
+  });
+}
+
+function selectBranch(branch) {
+  currentBranch = branch;
+  document.getElementById('branch-gate').style.display = 'none';
+  document.getElementById('catalog').style.display = 'block';
+  document.getElementById('current-branch-name').textContent = branch.name;
+  loadProducts();
+}
+
+function resetBranch() {
+  currentBranch = null;
+  document.getElementById('catalog').style.display = 'none';
+  document.getElementById('branch-gate').style.display = 'block';
+}
+
+async function loadProducts() {
+  const params = new URLSearchParams();
+  params.set('visiting_branch_id', currentBranch.id);
+  const search = document.getElementById('search').value.trim();
+  const sort = document.getElementById('sort').value;
+  const minPrice = document.getElementById('min_price').value;
+  const maxPrice = document.getElementById('max_price').value;
+  const fabric = document.getElementById('fabric').value.trim();
+  const foamType = document.getElementById('foam_type').value.trim();
+  if (search) params.set('search', search);
+  if (sort) params.set('sort', sort);
+  if (minPrice) params.set('min_price', minPrice);
+  if (maxPrice) params.set('max_price', maxPrice);
+  if (fabric) params.set('fabric', fabric);
+  if (foamType) params.set('foam_type', foamType);
+
+  const res = await fetch(`${API_BASE}/products?${params.toString()}`);
+  const data = await res.json();
+  renderGrid(data.items);
+}
+
+function renderGrid(items) {
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  grid.innerHTML = '';
+  empty.style.display = items.length === 0 ? 'block' : 'none';
+
+  items.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.onclick = () => openProduct(p.id);
+    const stockClass = p.stock_status === 'In Stock' ? 'in-stock' : 'made-to-order';
+    card.innerHTML = `
+      <img src="${imgUrl(p.primary_image)}" alt="${p.name}">
+      <div class="card-body">
+        <h3>${p.name}</h3>
+        <div class="price">₹${p.price.toLocaleString('en-IN')}</div>
+        <div class="branch-tag">${p.branch.name} branch</div>
+        <span class="stock ${stockClass}">${p.stock_status}</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function imgUrl(path) {
+  if (!path) return 'https://placehold.co/400x300?text=Sofa';
+  return path.startsWith('http') ? path : `${API_BASE.replace('/api/v1', '')}${path}`;
+}
+
+async function openProduct(id) {
+  const res = await fetch(`${API_BASE}/products/${id}`);
+  const p = await res.json();
+  const modal = document.getElementById('modal');
+  const stockClass = p.stock_status === 'In Stock' ? 'in-stock' : 'made-to-order';
+
+  const imagesHtml = (p.images.length ? p.images : [{image_url: null}])
+    .map(img => `<img src="${imgUrl(img.image_url)}">`).join('');
+
+  const colorsHtml = (p.available_colors || [])
+    .map(c => `<span class="color-chip">${c}</span>`).join('');
+
+  modal.innerHTML = `
+    <button class="close" onclick="closeModal()">&times;</button>
+    <div class="images">${imagesHtml}</div>
+    <h2>${p.name}</h2>
+    <div class="price">₹${p.price.toLocaleString('en-IN')}</div>
+    <span class="stock ${stockClass}">${p.stock_status}</span>
+    <p>${p.description || ''}</p>
+    <div class="colors">${colorsHtml}</div>
+    <table>
+      <tr><td>Branch</td><td>${p.branch.name}</td></tr>
+      <tr><td>Stock Count</td><td>${p.stock_count}</td></tr>
+      <tr><td>Dimensions (L x W x H)</td><td>${p.length_cm ?? '-'} x ${p.width_cm ?? '-'} x ${p.height_cm ?? '-'} cm</td></tr>
+      <tr><td>Seating Capacity</td><td>${p.seating_capacity ?? '-'}</td></tr>
+      <tr><td>Foam Thickness</td><td>${p.foam_thickness_cm ?? '-'} cm</td></tr>
+      <tr><td>Foam Type</td><td>${p.foam_type ?? '-'}</td></tr>
+      <tr><td>Fabric Material</td><td>${p.fabric_material ?? '-'}</td></tr>
+      <tr><td>Frame Material</td><td>${p.frame_material ?? '-'}</td></tr>
+      <tr><td>Color</td><td>${p.color ?? '-'}</td></tr>
+      <tr><td>Warranty</td><td>${p.warranty ?? '-'}</td></tr>
+    </table>
+  `;
+  document.getElementById('overlay').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('overlay').style.display = 'none';
+}
+
+init();
+</script>
+</body>
+</html>

@@ -7,34 +7,64 @@
 <style>
   * { box-sizing: border-box; }
   body { font-family: system-ui, Arial, sans-serif; margin: 0; background: #f7f5f2; color: #222; }
-  header { background: #2b2118; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+  header { background: #2b2118; color: #fff; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
   header a { color: #ddd; font-size: 14px; text-decoration: none; }
-  main { max-width: 1000px; margin: 0 auto; padding: 24px; }
+  header strong { font-size: 15px; }
+  main { max-width: 1000px; margin: 0 auto; padding: 16px; }
 
-  #login-box { max-width: 340px; margin: 80px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.1); }
+  #login-box { max-width: 340px; width: 100%; margin: 60px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.1); }
   #login-box h2 { margin-top: 0; }
-  #login-box input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
-  #login-box button, .btn { padding: 10px 16px; background: #6b4f3b; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+  #login-box input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+  #login-box button, .btn { padding: 12px 16px; background: #6b4f3b; color: #fff; border: none; border-radius: 4px; cursor: pointer; min-height: 44px; font-size: 14px; }
   #login-box button:hover, .btn:hover { background: #543d2d; }
   .error { color: #c0392b; font-size: 13px; margin-bottom: 10px; }
 
   #panel { display: none; }
-  .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; }
+  .row > div { display: flex; gap: 8px; flex-wrap: wrap; }
   .btn-secondary { background: #888; }
 
+  /* Table: normal table on wide screens, stacked cards on narrow screens */
   table.list { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; }
   table.list th, table.list td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
   table.list th { background: #efe9e2; }
   table.list img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
-  .actions button { margin-right: 6px; font-size: 12px; padding: 5px 8px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 6px; }
+  .actions button { font-size: 12px; padding: 8px 10px; min-height: 36px; }
 
-  form#product-form { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 24px; display: none; }
+  @media (max-width: 640px) {
+    table.list thead { display: none; }
+    table.list, table.list tbody, table.list tr, table.list td { display: block; width: 100%; }
+    table.list tr { background: #fff; border-radius: 8px; margin-bottom: 12px; padding: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    table.list td { border-bottom: none; padding: 6px 4px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    table.list td::before { content: attr(data-label); font-weight: bold; color: #888; font-size: 12px; flex-shrink: 0; }
+    table.list td:first-child::before { content: none; }
+    table.list img { width: 60px; height: 60px; }
+    .actions { justify-content: flex-end; width: 100%; }
+  }
+
+  form#product-form { background: #fff; padding: 16px; border-radius: 8px; margin-bottom: 24px; display: none; }
   form#product-form h3 { margin-top: 0; }
   .field-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
   .field-grid label { font-size: 13px; color: #555; display: block; margin-bottom: 4px; }
-  .field-grid input, .field-grid select, .field-grid textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+  .field-grid input, .field-grid select, .field-grid textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
   .full-width { grid-column: 1 / -1; }
-  form#product-form .form-actions { margin-top: 16px; }
+  form#product-form .form-actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+  form#product-form .form-actions button { flex: 1; min-width: 120px; }
+
+  @media (max-width: 480px) {
+    .field-grid { grid-template-columns: 1fr; }
+  }
+
+  #current-images { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .current-image-thumb { position: relative; width: 90px; }
+  .current-image-thumb img { width: 90px; height: 90px; object-fit: cover; border-radius: 6px; border: 2px solid transparent; }
+  .current-image-thumb img.is-primary { border-color: #6b4f3b; }
+  .current-image-thumb .primary-tag { font-size: 10px; text-align: center; color: #6b4f3b; margin-top: 2px; }
+  .current-image-thumb .remove-image-btn {
+    position: absolute; top: -6px; right: -6px; background: #c0392b; color: #fff; border: none;
+    border-radius: 50%; width: 24px; height: 24px; font-size: 14px; cursor: pointer; line-height: 1;
+  }
 </style>
 </head>
 <body>
@@ -69,14 +99,19 @@
       <input type="hidden" id="product-id">
       <div class="field-grid">
         <div><label>Name *</label><input id="f-name" required></div>
-        <div><label>Price (₹) *</label><input id="f-price" type="number" step="0.01" min="0.01" required></div>
+        <div><label>Price Tier *</label><select id="f-price" required>
+          <option value="">Select...</option>
+          <option value="Low">Low</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Premium">Premium</option>
+        </select></div>
         <div><label>Branch *</label><select id="f-branch" required></select></div>
         <div><label>Stock Count</label><input id="f-stock" type="number" min="0" value="0"></div>
-        <div><label>Length (cm)</label><input id="f-length" type="number" step="0.1"></div>
-        <div><label>Width (cm)</label><input id="f-width" type="number" step="0.1"></div>
-        <div><label>Height (cm)</label><input id="f-height" type="number" step="0.1"></div>
+        <div><label>Length (in)</label><input id="f-length" type="number" step="0.1"></div>
+        <div><label>Width (in)</label><input id="f-width" type="number" step="0.1"></div>
+        <div><label>Height (in)</label><input id="f-height" type="number" step="0.1"></div>
         <div><label>Seating Capacity</label><input id="f-seating" type="number" min="1" max="20"></div>
-        <div><label>Foam Thickness (cm)</label><input id="f-foam-thickness" type="number" step="0.1"></div>
+        <div><label>Foam Thickness (in)</label><input id="f-foam-thickness" type="number" step="0.1"></div>
         <div><label>Foam Type</label><input id="f-foam-type"></div>
         <div><label>Fabric Material</label><input id="f-fabric"></div>
         <div><label>Frame Material</label><input id="f-frame"></div>
@@ -84,7 +119,11 @@
         <div><label>Warranty</label><input id="f-warranty" placeholder="e.g. 2 Years"></div>
         <div class="full-width"><label>Available Colors (comma separated)</label><input id="f-colors" placeholder="Grey, Beige, Navy Blue"></div>
         <div class="full-width"><label>Description</label><textarea id="f-description" rows="3"></textarea></div>
-        <div class="full-width"><label>Images</label><input id="f-images" type="file" multiple accept="image/*"></div>
+        <div class="full-width">
+          <label>Current Images (click × to remove, click a photo to make it the main image)</label>
+          <div id="current-images"></div>
+        </div>
+        <div class="full-width"><label>Add New Images</label><input id="f-images" type="file" multiple accept="image/*"></div>
       </div>
       <div class="form-actions">
         <button type="submit" class="btn">Save</button>
@@ -94,7 +133,7 @@
 
     <table class="list">
       <thead>
-        <tr><th>Image</th><th>Name</th><th>Price</th><th>Branch</th><th>Stock</th><th>Actions</th></tr>
+        <tr><th>Image</th><th>Name</th><th>Price Tier</th><th>Branch</th><th>Stock</th><th>Actions</th></tr>
       </thead>
       <tbody id="product-rows"></tbody>
     </table>
@@ -154,12 +193,12 @@ async function loadProducts() {
   const rows = document.getElementById('product-rows');
   rows.innerHTML = data.items.map(p => `
     <tr>
-      <td><img src="${imgUrl(p.primary_image)}"></td>
-      <td>${p.name}</td>
-      <td>₹${p.price.toLocaleString('en-IN')}</td>
-      <td>${p.branch.name}</td>
-      <td>${p.stock_count} <em>(${p.stock_status})</em></td>
-      <td class="actions">
+      <td data-label="Image"><img src="${imgUrl(p.primary_image)}"></td>
+      <td data-label="Name">${p.name}</td>
+      <td data-label="Price Tier">${p.price_tier}</td>
+      <td data-label="Branch">${p.branch.name}</td>
+      <td data-label="Stock">${p.stock_count} <em>(${p.stock_status})</em></td>
+      <td class="actions" data-label="Actions">
         <button class="btn" onclick="editProduct(${p.id})">Edit</button>
         <button class="btn btn-secondary" onclick="promptStock(${p.id}, ${p.stock_count})">Stock</button>
         <button class="btn btn-secondary" onclick="deleteProduct(${p.id})">Delete</button>
@@ -177,6 +216,7 @@ function showForm() {
   document.getElementById('product-form').style.display = 'block';
   document.getElementById('form-title').textContent = 'Add Sofa';
   document.getElementById('product-id').value = '';
+  document.getElementById('current-images').innerHTML = '';
   ['name','price','stock','length','width','height','seating','foam-thickness','foam-type','fabric','frame','color','warranty','colors','description']
     .forEach(f => document.getElementById(`f-${f}`).value = '');
 }
@@ -192,14 +232,14 @@ async function editProduct(id) {
   document.getElementById('form-title').textContent = 'Edit Sofa';
   document.getElementById('product-id').value = p.id;
   document.getElementById('f-name').value = p.name;
-  document.getElementById('f-price').value = p.price;
+  document.getElementById('f-price').value = p.price_tier;
   document.getElementById('f-branch').value = p.branch.id;
   document.getElementById('f-stock').value = p.stock_count;
-  document.getElementById('f-length').value = p.length_cm ?? '';
-  document.getElementById('f-width').value = p.width_cm ?? '';
-  document.getElementById('f-height').value = p.height_cm ?? '';
+  document.getElementById('f-length').value = p.length_in ?? '';
+  document.getElementById('f-width').value = p.width_in ?? '';
+  document.getElementById('f-height').value = p.height_in ?? '';
   document.getElementById('f-seating').value = p.seating_capacity ?? '';
-  document.getElementById('f-foam-thickness').value = p.foam_thickness_cm ?? '';
+  document.getElementById('f-foam-thickness').value = p.foam_thickness_in ?? '';
   document.getElementById('f-foam-type').value = p.foam_type ?? '';
   document.getElementById('f-fabric').value = p.fabric_material ?? '';
   document.getElementById('f-frame').value = p.frame_material ?? '';
@@ -207,6 +247,43 @@ async function editProduct(id) {
   document.getElementById('f-warranty').value = p.warranty ?? '';
   document.getElementById('f-colors').value = (p.available_colors || []).join(', ');
   document.getElementById('f-description').value = p.description ?? '';
+  renderCurrentImages(p);
+}
+
+function renderCurrentImages(product) {
+  const container = document.getElementById('current-images');
+  if (!product.images || product.images.length === 0) {
+    container.innerHTML = '<span style="font-size:13px;color:#888">No images uploaded yet.</span>';
+    return;
+  }
+  container.innerHTML = product.images.map(img => `
+    <div class="current-image-thumb">
+      <img src="${imgUrl(img.image_url)}" class="${img.is_primary ? 'is-primary' : ''}"
+           title="Click to set as main photo" onclick="makePrimary(${product.id}, ${img.id})" />
+      <div class="primary-tag">${img.is_primary ? 'Main photo' : ''}</div>
+      <button type="button" class="remove-image-btn" title="Remove image"
+              onclick="removeImage(${product.id}, ${img.id})">×</button>
+    </div>
+  `).join('');
+}
+
+async function makePrimary(productId, imageId) {
+  await fetch(`${API_BASE}/admin/products/${productId}/images/${imageId}/primary`, {
+    method: 'PATCH',
+    headers: authHeaders(),
+  });
+  await editProduct(productId);
+  await loadProducts();
+}
+
+async function removeImage(productId, imageId) {
+  if (!confirm('Remove this image?')) return;
+  await fetch(`${API_BASE}/admin/products/${productId}/images/${imageId}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  });
+  await editProduct(productId);
+  await loadProducts();
 }
 
 async function saveProduct(event) {
@@ -215,14 +292,14 @@ async function saveProduct(event) {
   const colorsRaw = document.getElementById('f-colors').value;
   const payload = {
     name: document.getElementById('f-name').value,
-    price: parseFloat(document.getElementById('f-price').value),
+    price_tier: document.getElementById('f-price').value,
     branch_id: parseInt(document.getElementById('f-branch').value),
     stock_count: parseInt(document.getElementById('f-stock').value || '0'),
-    length_cm: numOrNull('f-length'),
-    width_cm: numOrNull('f-width'),
-    height_cm: numOrNull('f-height'),
+    length_in: numOrNull('f-length'),
+    width_in: numOrNull('f-width'),
+    height_in: numOrNull('f-height'),
     seating_capacity: numOrNull('f-seating'),
-    foam_thickness_cm: numOrNull('f-foam-thickness'),
+    foam_thickness_in: numOrNull('f-foam-thickness'),
     foam_type: strOrNull('f-foam-type'),
     fabric_material: strOrNull('f-fabric'),
     frame_material: strOrNull('f-frame'),

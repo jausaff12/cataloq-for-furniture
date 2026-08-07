@@ -27,7 +27,7 @@ class Settings(BaseSettings):
 
     # --- Uploads ---
     UPLOAD_DIR: str = "static/uploads"
-    MAX_IMAGE_SIZE_MB: int = 5
+    MAX_IMAGE_SIZE_MB: int = 20
 
     # --- CORS ---
     CORS_ORIGINS: str = "*"

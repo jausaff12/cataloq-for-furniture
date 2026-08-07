@@ -1,0 +1,15 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.db
+
+# Environment secrets
+.env
+
+# macOS junk
+.DS_Store
+
+# Uploaded images (test data — not meant for version control)
+backend/static/uploads/*
+!backend/static/uploads/.gitkeep

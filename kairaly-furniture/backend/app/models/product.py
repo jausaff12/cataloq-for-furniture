@@ -27,7 +27,10 @@ class Product(Base):
     # --- Core info ---
     name = Column(String(200), nullable=False, index=True)
     category = Column(String(50), nullable=False, default="sofa", index=True)
-    price = Column(Float, nullable=False)
+    # Numeric price is no longer shown to customers; kept nullable for potential
+    # future internal/back-office use. Public-facing pricing is the tier below.
+    price = Column(Float, nullable=True)
+    price_tier = Column(String(20), nullable=False, default="Moderate", index=True)
     description = Column(Text, nullable=True)
     stock_count = Column(Integer, nullable=False, default=0)
 
@@ -36,13 +39,13 @@ class Product(Base):
     branch = relationship("Branch", back_populates="products")
 
     # --- Dimensions ---
-    length_cm = Column(Float, nullable=True)
-    width_cm = Column(Float, nullable=True)
-    height_cm = Column(Float, nullable=True)
+    length_in = Column(Float, nullable=True)
+    width_in = Column(Float, nullable=True)
+    height_in = Column(Float, nullable=True)
 
     # --- Sofa-specific attributes ---
     seating_capacity = Column(Integer, nullable=True)
-    foam_thickness_cm = Column(Float, nullable=True)
+    foam_thickness_in = Column(Float, nullable=True)
     foam_type = Column(String(100), nullable=True, index=True)
     fabric_material = Column(String(100), nullable=True, index=True)
     frame_material = Column(String(100), nullable=True)
@@ -64,7 +67,7 @@ class Product(Base):
     )
 
     __table_args__ = (
-        CheckConstraint("price >= 0", name="ck_products_price_non_negative"),
+        CheckConstraint("price >= 0 OR price IS NULL", name="ck_products_price_non_negative"),
         CheckConstraint("stock_count >= 0", name="ck_products_stock_non_negative"),
     )
 

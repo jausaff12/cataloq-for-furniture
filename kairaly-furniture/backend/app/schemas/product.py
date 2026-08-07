@@ -10,8 +10,8 @@ from app.schemas.product_image import ProductImageRead
 class SortOption(str, enum.Enum):
     NEWEST = "newest"
     OLDEST = "oldest"
-    PRICE_LOW_TO_HIGH = "price_low_to_high"
-    PRICE_HIGH_TO_LOW = "price_high_to_low"
+    PRICE_LOW_TO_HIGH = "price_low_to_high"   # now sorts Low -> Moderate -> Premium
+    PRICE_HIGH_TO_LOW = "price_high_to_low"   # now sorts Premium -> Moderate -> Low
 
 
 class StockStatus(str, enum.Enum):
@@ -19,22 +19,28 @@ class StockStatus(str, enum.Enum):
     MADE_TO_ORDER = "Made to Order"
 
 
+class PriceTier(str, enum.Enum):
+    LOW = "Low"
+    MODERATE = "Moderate"
+    PREMIUM = "Premium"
+
+
 # ---------------------------------------------------------------------------
 # Shared field definitions
 # ---------------------------------------------------------------------------
 class ProductBase(BaseModel):
     name: str = Field(..., min_length=2, max_length=200)
-    price: float = Field(..., gt=0, description="Price must be greater than 0")
+    price_tier: PriceTier = Field(..., description="Pricing category shown to customers")
     description: str | None = Field(None, max_length=5000)
     branch_id: int = Field(..., gt=0)
     stock_count: int = Field(0, ge=0)
 
-    length_cm: float | None = Field(None, gt=0)
-    width_cm: float | None = Field(None, gt=0)
-    height_cm: float | None = Field(None, gt=0)
+    length_in: float | None = Field(None, gt=0)
+    width_in: float | None = Field(None, gt=0)
+    height_in: float | None = Field(None, gt=0)
 
     seating_capacity: int | None = Field(None, gt=0, le=20)
-    foam_thickness_cm: float | None = Field(None, gt=0)
+    foam_thickness_in: float | None = Field(None, gt=0)
     foam_type: str | None = Field(None, max_length=100)
     fabric_material: str | None = Field(None, max_length=100)
     frame_material: str | None = Field(None, max_length=100)
@@ -62,17 +68,17 @@ class ProductUpdate(BaseModel):
     """All fields optional - only supplied fields are updated (PATCH-style via PUT)."""
 
     name: str | None = Field(None, min_length=2, max_length=200)
-    price: float | None = Field(None, gt=0)
+    price_tier: PriceTier | None = None
     description: str | None = Field(None, max_length=5000)
     branch_id: int | None = Field(None, gt=0)
     stock_count: int | None = Field(None, ge=0)
 
-    length_cm: float | None = Field(None, gt=0)
-    width_cm: float | None = Field(None, gt=0)
-    height_cm: float | None = Field(None, gt=0)
+    length_in: float | None = Field(None, gt=0)
+    width_in: float | None = Field(None, gt=0)
+    height_in: float | None = Field(None, gt=0)
 
     seating_capacity: int | None = Field(None, gt=0, le=20)
-    foam_thickness_cm: float | None = Field(None, gt=0)
+    foam_thickness_in: float | None = Field(None, gt=0)
     foam_type: str | None = Field(None, max_length=100)
     fabric_material: str | None = Field(None, max_length=100)
     frame_material: str | None = Field(None, max_length=100)
@@ -103,7 +109,7 @@ class ProductListItem(BaseModel):
 
     id: int
     name: str
-    price: float
+    price_tier: str
     stock_count: int
     branch: BranchRead
     created_at: datetime
@@ -122,17 +128,17 @@ class ProductRead(BaseModel):
 
     id: int
     name: str
-    price: float
+    price_tier: str
     description: str | None
     stock_count: int
     branch: BranchRead
 
-    length_cm: float | None
-    width_cm: float | None
-    height_cm: float | None
+    length_in: float | None
+    width_in: float | None
+    height_in: float | None
 
     seating_capacity: int | None
-    foam_thickness_cm: float | None
+    foam_thickness_in: float | None
     foam_type: str | None
     fabric_material: str | None
     frame_material: str | None

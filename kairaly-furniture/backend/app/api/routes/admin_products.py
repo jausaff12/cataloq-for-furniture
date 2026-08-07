@@ -1,7 +1,10 @@
+import io
 import os
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, status
+from PIL import Image
+import pillow_heif
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_admin
@@ -14,6 +17,7 @@ from app.crud.product import (
     delete_product_image,
     get_product,
     list_products,
+    set_primary_image,
     update_product,
     update_stock,
 )
@@ -28,9 +32,15 @@ from app.schemas.product import (
     SortOption,
     StockUpdate,
 )
+
+pillow_heif.register_heif_opener()  # lets Pillow open .heic/.heif files
+
 router = APIRouter(prefix="/admin/products", tags=["Admin - Products"])
 
-ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
+ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"}
+# iPhone photos (.heic/.heif) aren't viewable in most browsers, so they're
+# converted to .jpg on the server before being saved to disk.
+HEIC_EXTENSIONS = {".heic", ".heif"}
 
 
 def _validate_branch_exists(db: Session, branch_id: int) -> None:
@@ -147,14 +157,44 @@ def admin_upload_images(
                 detail=f"Image '{file.filename}' exceeds max size of {settings.MAX_IMAGE_SIZE_MB}MB",
             )
 
-        filename = f"{uuid.uuid4().hex}{ext}"
-        filepath = os.path.join(upload_dir, filename)
-        with open(filepath, "wb") as f:
-            f.write(contents)
+        if ext in HEIC_EXTENSIONS:
+            # Convert iPhone HEIC/HEIF photos to JPG so they render in every browser.
+            try:
+                image = Image.open(io.BytesIO(contents)).convert("RGB")
+            except Exception:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Could not read image '{file.filename}'. The file may be corrupted.",
+                )
+            filename = f"{uuid.uuid4().hex}.jpg"
+            filepath = os.path.join(upload_dir, filename)
+            image.save(filepath, "JPEG", quality=90)
+        else:
+            filename = f"{uuid.uuid4().hex}{ext}"
+            filepath = os.path.join(upload_dir, filename)
+            with open(filepath, "wb") as f:
+                f.write(contents)
 
         saved_urls.append(f"/static/uploads/{filename}")
 
     add_product_images(db, product, saved_urls)
+    return get_product(db, product_id)
+
+
+@router.patch(
+    "/{product_id}/images/{image_id}/primary",
+    response_model=ProductRead,
+    summary="Set a specific image as the main/primary photo",
+)
+def admin_set_primary_image(
+    product_id: int,
+    image_id: int,
+    db: Session = Depends(get_db),
+    _admin: User = Depends(get_current_admin),
+):
+    product = _get_product_or_404(db, product_id)
+    if not set_primary_image(db, product, image_id):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found on this product")
     return get_product(db, product_id)
 
 

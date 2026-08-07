@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.crud.branch import get_branch, get_branch_by_name
 from app.crud.product import get_product, list_products
 from app.database import get_db
-from app.schemas.product import PaginatedProducts, ProductListItem, ProductRead, SortOption
+from app.schemas.product import PaginatedProducts, PriceTier, ProductListItem, ProductRead, SortOption
 
 router = APIRouter(prefix="/products", tags=["Products (Public Catalog)"])
 
@@ -29,8 +29,7 @@ def browse_products(
         None, description="ID of the branch the customer is currently visiting (alternative to visiting_branch)"
     ),
     search: str | None = Query(None, description="Search by product name"),
-    min_price: float | None = Query(None, ge=0),
-    max_price: float | None = Query(None, ge=0),
+    price_tier: PriceTier | None = Query(None, description="Filter by pricing category: Low, Moderate, or Premium"),
     fabric: str | None = Query(None, description="Filter by fabric material"),
     foam_type: str | None = Query(None, description="Filter by foam type"),
     sort: SortOption = Query(SortOption.NEWEST),
@@ -49,15 +48,11 @@ def browse_products(
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="visiting_branch not found")
         exclude_branch_id = branch.id
 
-    if min_price is not None and max_price is not None and min_price > max_price:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="min_price cannot exceed max_price")
-
     items, total = list_products(
         db,
         exclude_branch_id=exclude_branch_id,
         search=search,
-        min_price=min_price,
-        max_price=max_price,
+        price_tier=price_tier.value if price_tier else None,
         fabric_material=fabric,
         foam_type=foam_type,
         sort=sort,

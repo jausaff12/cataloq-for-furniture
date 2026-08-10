@@ -1,2 +1,2 @@
 // Point this at your running backend.
-const API_BASE = "http://localhost:8000/api/v1";
+const API_BASE = "https://cataloq-for-furniture.onrender.com/api/v1";

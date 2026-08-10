@@ -1,231 +1,706 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Kairaly Furniture - Sofa Catalog</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sofa Catalog | Kairaly Furniture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-tertiary-container": "#e5e6e8",
+                    "tertiary-fixed": "#e1e2e4",
+                    "surface-variant": "#e5e2e1",
+                    "outline": "#727783",
+                    "inverse-on-surface": "#f3f0ef",
+                    "surface-tint": "#005eb5",
+                    "secondary-container": "#dfe0e0",
+                    "inverse-primary": "#a8c8ff",
+                    "surface-dim": "#dcd9d9",
+                    "tertiary-container": "#656769",
+                    "error": "#ba1a1a",
+                    "surface-container": "#f0eded",
+                    "on-primary-fixed": "#001b3d",
+                    "inverse-surface": "#313030",
+                    "on-primary": "#ffffff",
+                    "background": "#fcf9f8",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "on-primary-fixed-variant": "#00468a",
+                    "surface": "#fcf9f8",
+                    "primary-fixed": "#d6e3ff",
+                    "on-surface-variant": "#414752",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#e2e2e2",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-low": "#f6f3f2",
+                    "primary-container": "#0a66c2",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#191c1e",
+                    "surface-bright": "#fcf9f8",
+                    "outline-variant": "#c1c6d4",
+                    "surface-container-high": "#eae7e7",
+                    "on-background": "#1c1b1b",
+                    "secondary": "#5d5f5f",
+                    "tertiary-fixed-dim": "#c5c6c8",
+                    "primary": "#004e99",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#1c1b1b",
+                    "on-secondary-container": "#616363",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#a8c8ff",
+                    "surface-container-highest": "#e5e2e1",
+                    "tertiary": "#4d4f51",
+                    "on-primary-container": "#dbe6ff",
+                    "secondary-fixed-dim": "#c6c6c7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "container-max": "1440px",
+                    "gutter": "24px",
+                    "margin-desktop": "64px",
+                    "section-gap": "120px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
 <style>
-  * { box-sizing: border-box; }
-  body { font-family: system-ui, Arial, sans-serif; margin: 0; background: #f7f5f2; color: #222; }
-  header { background: #2b2118; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-  header a { color: #ddd; font-size: 14px; text-decoration: none; }
-  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.08);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e5e2e1; border-radius: 10px; }
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #dfe0e0;
+            border-radius: 2px;
+            outline: none;
+        }
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #004e99;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .fabric-btn.active {
+            background-color: #004e99;
+            color: #ffffff;
+            border-color: #004e99;
+        }
+        /* --- Branch gate --- */
+        #branch-gate-overlay {
+            position: fixed; inset: 0; z-index: 100;
+            background: #fcf9f8;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #branch-gate-overlay.hidden { display: none; }
+        /* --- Product detail modal --- */
+        #product-modal-overlay {
+            position: fixed; inset: 0; z-index: 100;
+            background: rgba(0,0,0,0.6);
+            display: none; align-items: center; justify-content: center;
+            padding: 0;
+        }
+        #product-modal-overlay.open { display: flex; }
+        #product-modal {
+            background: #fcf9f8; max-width: 900px; width: 100%; height: 100%; max-height: 100vh;
+            overflow-y: auto; border-radius: 0; padding: 24px; position: relative;
+        }
+        #product-modal .close-btn {
+            position: absolute; top: 16px; right: 16px; cursor: pointer;
+            background: #f0eded; border: none; border-radius: 9999px;
+            width: 40px; height: 40px; font-size: 18px; z-index: 5;
+        }
+        .modal-images { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 20px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .modal-images img { height: 220px; border-radius: 14px; object-fit: cover; scroll-snap-align: start; flex-shrink: 0; }
+        .spec-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .spec-table td { padding: 12px 4px; border-bottom: 1px solid #e5e2e1; font-size: 15px; }
+        .spec-table td:first-child { color: #5d5f5f; width: 45%; }
+        .color-chip { display: inline-block; padding: 4px 12px; border-radius: 9999px; background: #f0eded; font-size: 12px; margin: 3px; }
 
-  #branch-gate { text-align: center; padding: 80px 20px; }
-  #branch-gate h1 { font-size: 22px; margin-bottom: 30px; }
-  .branch-btn { font-size: 16px; padding: 14px 28px; margin: 0 10px; border: none; border-radius: 6px; background: #6b4f3b; color: #fff; cursor: pointer; }
-  .branch-btn:hover { background: #543d2d; }
+        /* Larger screens (tablet landscape / desktop): modal becomes a centered card again */
+        @media (min-width: 768px) {
+            #product-modal-overlay { padding: 24px; }
+            #product-modal { height: auto; max-height: 90vh; border-radius: 24px; padding: 32px; }
+            .modal-images img { height: 240px; }
+        }
 
-  #catalog { display: none; }
-  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; align-items: center; }
-  .toolbar input, .toolbar select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-  .toolbar input[type=text] { flex: 1; min-width: 160px; }
-  .toolbar .price-range { display: flex; gap: 6px; align-items: center; }
-  .toolbar .price-range input { width: 90px; }
-
-  .current-branch { font-size: 13px; color: #666; margin-bottom: 14px; }
-  .current-branch button { margin-left: 10px; background: none; border: none; color: #6b4f3b; text-decoration: underline; cursor: pointer; }
-
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
-  .card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); cursor: pointer; }
-  .card img { width: 100%; height: 180px; object-fit: cover; background: #e8e4de; }
-  .card-body { padding: 12px; }
-  .card-body h3 { margin: 0 0 6px; font-size: 15px; }
-  .price { font-weight: bold; color: #6b4f3b; }
-  .branch-tag { font-size: 12px; color: #888; margin-top: 4px; }
-  .stock { display: inline-block; margin-top: 6px; font-size: 12px; padding: 3px 8px; border-radius: 10px; }
-  .in-stock { background: #e3f5e6; color: #1c7a34; }
-  .made-to-order { background: #fdf1dd; color: #a5680c; }
-
-  .empty { text-align: center; padding: 60px; color: #888; }
-
-  /* Modal */
-  #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); align-items: center; justify-content: center; padding: 20px; z-index: 10; }
-  #modal { background: #fff; max-width: 780px; width: 100%; max-height: 90vh; overflow-y: auto; border-radius: 8px; padding: 24px; position: relative; }
-  #modal .close { position: absolute; top: 14px; right: 18px; cursor: pointer; font-size: 20px; background: none; border: none; }
-  #modal .images { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; }
-  #modal .images img { height: 220px; border-radius: 6px; object-fit: cover; }
-  #modal h2 { margin: 0 0 6px; }
-  #modal table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
-  #modal table td { padding: 6px 4px; border-bottom: 1px solid #eee; }
-  #modal table td:first-child { color: #777; width: 40%; }
-  .colors { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-  .color-chip { padding: 3px 10px; border-radius: 12px; background: #f0ece6; font-size: 12px; }
-</style>
+        /* Touch-friendly branch gate buttons, full-width and stacked on narrow screens */
+        .branch-btn { width: 100%; min-height: 56px; }
+        @media (min-width: 480px) {
+            .branch-btn { width: auto; }
+        }
+    </style>
 </head>
-<body>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden">
 
-<header>
-  <strong>Kairaly Furniture</strong>
-  <a href="admin.html">Admin Login</a>
-</header>
-
-<main>
-  <!-- Step 1: Branch gate -->
-  <div id="branch-gate">
-    <h1>Which branch are you currently visiting?</h1>
-    <div id="branch-buttons">Loading branches...</div>
-  </div>
-
-  <!-- Step 2: Catalog -->
-  <div id="catalog">
-    <div class="current-branch">
-      You're browsing from <strong id="current-branch-name"></strong> —
-      showing sofas available at our other branch.
-      <button onclick="resetBranch()">Change branch</button>
+<!-- ============================================================ -->
+<!-- Branch gate: "Which branch are you currently visiting?"      -->
+<!-- ============================================================ -->
+<div id="branch-gate-overlay">
+  <div class="text-center px-6 w-full max-w-sm">
+    <div class="text-lg md:text-headline-md font-headline-lg tracking-tight text-primary mb-2">Kairaly Furniture</div>
+    <h1 class="text-xl md:text-headline-lg font-headline-lg mb-10">Which branch are you currently visiting?</h1>
+    <div id="branch-buttons" class="flex flex-col sm:flex-row flex-wrap justify-center gap-4">
+      <!-- Populated by JS from GET /branches -->
     </div>
-
-    <div class="toolbar">
-      <input type="text" id="search" placeholder="Search sofas by name...">
-      <select id="sort">
-        <option value="newest">Newest</option>
-        <option value="oldest">Oldest</option>
-        <option value="price_low_to_high">Price: Low to High</option>
-        <option value="price_high_to_low">Price: High to Low</option>
-      </select>
-      <div class="price-range">
-        <input type="number" id="min_price" placeholder="Min ₹">
-        <span>-</span>
-        <input type="number" id="max_price" placeholder="Max ₹">
-      </div>
-      <input type="text" id="fabric" placeholder="Fabric (e.g. Velvet)" style="width:150px">
-      <input type="text" id="foam_type" placeholder="Foam type" style="width:150px">
-      <button onclick="loadProducts()">Apply</button>
-    </div>
-
-    <div id="grid" class="grid"></div>
-    <div id="empty" class="empty" style="display:none">No sofas match your filters.</div>
   </div>
-</main>
-
-<!-- Product detail modal -->
-<div id="overlay" onclick="if(event.target===this) closeModal()">
-  <div id="modal"></div>
 </div>
 
-<script src="config.js"></script>
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-sm h-16 md:h-20 flex items-center">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-4 md:px-margin-desktop w-full">
+<div class="text-lg md:text-headline-md font-headline-lg tracking-tight text-primary">Kairaly Furniture</div>
+<nav class="hidden lg:flex gap-8 items-center">
+<a class="text-primary border-b-2 border-primary pb-1 font-body-md" href="#">Living</a>
+<a class="text-secondary hover:text-primary transition-colors font-body-md" href="#">Dining</a>
+<a class="text-secondary hover:text-primary transition-colors font-body-md" href="#">Bedroom</a>
+<a class="text-secondary hover:text-primary transition-colors font-body-md" href="#">Office</a>
+<a class="text-secondary hover:text-primary transition-colors font-body-md" href="#">Collection</a>
+</nav>
+<div class="flex items-center gap-2 md:gap-4">
+<span id="current-branch-pill" class="hidden sm:inline-flex items-center gap-1 text-label-sm text-secondary bg-surface-container-low px-3 py-1.5 rounded-full">
+  <span class="material-symbols-outlined text-sm">storefront</span>
+  <span id="current-branch-name"></span>
+  <button id="switch-branch-btn" class="ml-1 text-primary underline">switch</button>
+</span>
+<a href="admin.html" class="hidden lg:flex p-2 hover:bg-surface-variant/50 rounded-lg transition-all duration-300 active:scale-95">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</a>
+<button id="hamburger-btn" class="lg:hidden flex items-center justify-center w-11 h-11 rounded-lg hover:bg-surface-variant/50 active:scale-95 transition-all" aria-label="Menu">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+</div>
+</div>
+</header>
+
+<!-- Mobile nav drawer (slides down from header, covers Living/Dining/etc + branch + admin) -->
+<div id="mobile-nav-overlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+<div id="mobile-nav-drawer" class="fixed top-0 right-0 w-72 max-w-[85vw] h-full bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+<div class="flex items-center justify-between h-16 px-5 border-b border-outline-variant/30">
+<span class="font-headline-md text-primary">Menu</span>
+<button id="mobile-nav-close" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50" aria-label="Close menu">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<nav class="flex flex-col p-5 gap-1 text-body-lg">
+<a class="py-3 px-2 text-primary font-bold border-b border-outline-variant/20" href="#">Living</a>
+<a class="py-3 px-2 text-secondary border-b border-outline-variant/20" href="#">Dining</a>
+<a class="py-3 px-2 text-secondary border-b border-outline-variant/20" href="#">Bedroom</a>
+<a class="py-3 px-2 text-secondary border-b border-outline-variant/20" href="#">Office</a>
+<a class="py-3 px-2 text-secondary border-b border-outline-variant/20" href="#">Collection</a>
+<a href="admin.html" class="py-3 px-2 text-secondary flex items-center gap-2 mt-2">
+<span class="material-symbols-outlined text-sm">person</span> Admin Login
+</a>
+</nav>
+<div class="mt-auto p-5 border-t border-outline-variant/30 flex items-center gap-2 text-label-sm text-secondary">
+  <span class="material-symbols-outlined text-sm">storefront</span>
+  <span>Visiting: <span id="current-branch-name-mobile" class="font-bold text-primary"></span></span>
+  <button id="switch-branch-btn-mobile" class="ml-auto text-primary underline">switch</button>
+</div>
+</div>
+
+<main class="pt-20 md:pt-24 pb-section-gap max-w-container-max mx-auto px-4 md:px-margin-desktop">
+<!-- Main Content Area (filters now live in a drawer, used at every screen size) -->
+<section class="flex-grow">
+<!-- Header Tools -->
+<div class="flex flex-col gap-4 mb-8 md:mb-12">
+<div>
+<h1 class="text-2xl md:text-headline-lg font-headline-lg mb-1">Modern Sofas</h1>
+<p class="text-secondary font-body-md text-sm md:text-base">Discover architectural comfort for your living space.</p>
+</div>
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+<button id="open-filters-btn" class="flex items-center justify-center gap-2 px-4 h-12 border border-outline-variant rounded-lg font-bold text-body-md hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined text-lg">tune</span> Filters
+</button>
+<div class="relative flex-grow">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input id="search-input" class="w-full h-12 pl-10 pr-4 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary-container text-body-md transition-all" placeholder="Search collection..." type="text"/>
+</div>
+<div class="relative group">
+<select id="sort-select" class="appearance-none w-full sm:w-auto h-12 bg-surface-container-low border-none rounded-lg py-2 pl-4 pr-10 text-body-md focus:ring-2 focus:ring-primary-container cursor-pointer min-w-[160px]">
+<option value="newest">Sort: Newest</option>
+<option value="price_low_to_high">Tier: Low to Premium</option>
+<option value="price_high_to_low">Tier: Premium to Low</option>
+<option value="oldest">Oldest First</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Sofa Grid (populated dynamically) -->
+<div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-gutter"></div>
+<div id="empty-state" class="hidden text-center py-24 text-secondary text-body-lg">No sofas match your filters.</div>
+<div id="loading-state" class="text-center py-24 text-secondary text-body-lg">Loading sofas…</div>
+<!-- Pagination -->
+<div id="pagination" class="mt-12 md:mt-20 flex justify-center items-center gap-3 flex-wrap"></div>
+</section>
+</main>
+
+<!-- Filters drawer: used at every screen size, opened via the Filters button -->
+<div id="filters-overlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+<div id="filters-drawer" class="fixed top-0 left-0 w-80 max-w-[88vw] h-full bg-white z-50 shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col">
+<div class="flex items-center justify-between h-16 px-5 border-b border-outline-variant/30 flex-shrink-0">
+<span class="font-headline-md text-primary">Filters</span>
+<button id="filters-close" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50" aria-label="Close filters">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-grow overflow-y-auto p-5">
+<!-- Price Tier -->
+<div class="mb-10">
+<label class="block text-label-sm uppercase tracking-wider text-secondary mb-4">Price Tier</label>
+<div class="grid grid-cols-3 gap-2" id="price-tier-list">
+<button class="tier-btn px-3 py-3 text-label-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" data-tier="Low">Low</button>
+<button class="tier-btn px-3 py-3 text-label-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" data-tier="Moderate">Moderate</button>
+<button class="tier-btn px-3 py-3 text-label-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" data-tier="Premium">Premium</button>
+</div>
+</div>
+<!-- Foam Type -->
+<div class="mb-10">
+<label class="block text-label-sm uppercase tracking-wider text-secondary mb-4">Foam Type</label>
+<div class="space-y-1" id="foam-type-list">
+<label class="flex items-center gap-3 cursor-pointer group py-2">
+<input class="rounded border-outline-variant text-primary focus:ring-primary-container w-5 h-5" name="foam_type" type="radio" value=""/>
+<span class="text-body-md group-hover:text-primary transition-colors">All</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group py-2">
+<input class="rounded border-outline-variant text-primary focus:ring-primary-container w-5 h-5" name="foam_type" type="radio" value="High Density Foam"/>
+<span class="text-body-md group-hover:text-primary transition-colors">High Density PU</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group py-2">
+<input class="rounded border-outline-variant text-primary focus:ring-primary-container w-5 h-5" name="foam_type" type="radio" value="Memory Foam"/>
+<span class="text-body-md group-hover:text-primary transition-colors">Memory Foam</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group py-2">
+<input class="rounded border-outline-variant text-primary focus:ring-primary-container w-5 h-5" name="foam_type" type="radio" value="High Resilience Foam"/>
+<span class="text-body-md group-hover:text-primary transition-colors">HR Foam (High Resilience)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group py-2">
+<input class="rounded border-outline-variant text-primary focus:ring-primary-container w-5 h-5" name="foam_type" type="radio" value="Latex Core"/>
+<span class="text-body-md group-hover:text-primary transition-colors">Latex Core</span>
+</label>
+</div>
+</div>
+<!-- Fabric -->
+<div class="mb-10">
+<label class="block text-label-sm uppercase tracking-wider text-secondary mb-4">Fabric Style</label>
+<div class="grid grid-cols-2 gap-2" id="fabric-list">
+<button class="fabric-btn px-3 py-3 text-label-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" data-fabric="Velvet">Velvet</button>
+<button class="fabric-btn px-3 py-3 text-label-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" data-fabric="Linen">Linen</button>
+<button class="fabric-btn px-3 py-3 text-label-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" data-fabric="Leatherette">Leatherette</button>
+<button class="fabric-btn px-3 py-3 text-label-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" data-fabric="Suede">Suede</button>
+<button class="fabric-btn px-3 py-3 text-label-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" data-fabric="Cotton">Cotton</button>
+<button class="fabric-btn px-3 py-3 text-label-sm border border-outline-variant rounded-lg hover:border-primary hover:text-primary transition-all" data-fabric="Polyester">Polyester</button>
+</div>
+</div>
+</div>
+<div class="p-5 border-t border-outline-variant/30 flex-shrink-0">
+<button id="apply-filters-btn" class="w-full py-4 bg-primary text-white font-bold rounded-lg shadow-sm active:scale-95 transition-all">
+                        Apply Filters
+                    </button>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface-container-highest border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter max-w-container-max mx-auto px-margin-desktop">
+<div class="space-y-6">
+<div class="text-headline-md font-headline-md text-primary">Kairaly Furniture</div>
+<p class="text-body-md text-secondary max-w-xs">Elevating Kerala's living spaces with architectural precision and timeless design since 1998.</p>
+</div>
+<div>
+<h4 class="text-label-sm uppercase tracking-widest text-on-surface mb-6 font-bold">Quick Links</h4>
+<ul class="space-y-4">
+<li><a class="text-secondary hover:text-primary transition-colors hover:underline underline-offset-4" href="#">Showroom Locations</a></li>
+<li><a class="text-secondary hover:text-primary transition-colors hover:underline underline-offset-4" href="#">Contact Us</a></li>
+<li><a class="text-secondary hover:text-primary transition-colors hover:underline underline-offset-4" href="#">Sustainability</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-label-sm uppercase tracking-widest text-on-surface mb-6 font-bold">Support</h4>
+<ul class="space-y-4">
+<li><a class="text-secondary hover:text-primary transition-colors hover:underline underline-offset-4" href="#">Shipping &amp; Returns</a></li>
+<li><a class="text-secondary hover:text-primary transition-colors hover:underline underline-offset-4" href="#">Privacy Policy</a></li>
+<li><a class="text-secondary hover:text-primary transition-colors hover:underline underline-offset-4" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-label-sm uppercase tracking-widest text-on-surface mb-6 font-bold">Newsletter</h4>
+<p class="text-label-sm text-secondary mb-4">Join our community for design inspiration.</p>
+<div class="flex gap-2">
+<input class="bg-surface border-none rounded-lg px-4 py-2 w-full focus:ring-2 focus:ring-primary-container" placeholder="Email address" type="email"/>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-primary/90 transition-all">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop mt-20 pt-10 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4 text-label-sm text-secondary">
+<span>© 2024 Kairaly Furniture. Modern Living. All rights reserved.</span>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Instagram</a>
+<a class="hover:text-primary transition-colors" href="#">Pinterest</a>
+<a class="hover:text-primary transition-colors" href="#">LinkedIn</a>
+</div>
+</div>
+</footer>
+
+<!-- ============================================================ -->
+<!-- Product detail modal                                          -->
+<!-- ============================================================ -->
+<div id="product-modal-overlay">
+  <div id="product-modal">
+    <button class="close-btn" id="modal-close-btn">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
 <script>
-let currentBranch = null; // the branch the customer is standing in
+    // =================================================================
+    // Config — change this if your backend runs somewhere other than
+    // localhost:8000
+    // =================================================================
+    const API_BASE = "https://cataloq-for-furniture.onrender.com/api/v1";
+    const API_ROOT = "https://cataloq-for-furniture.onrender.com";
+    let visitingBranch = null; // e.g. "Choondi"
+    let currentPage = 1;
+    const PAGE_SIZE = 9;
 
-async function init() {
-  const res = await fetch(`${API_BASE}/branches`);
-  const branches = await res.json();
-  const container = document.getElementById('branch-buttons');
-  container.innerHTML = '';
-  branches.forEach(b => {
-    const btn = document.createElement('button');
-    btn.className = 'branch-btn';
-    btn.textContent = b.name;
-    btn.onclick = () => selectBranch(b);
-    container.appendChild(btn);
-  });
-}
+    // -----------------------------------------------------------
+    // Branch gate
+    // -----------------------------------------------------------
+    async function loadBranches() {
+        const res = await fetch(`${API_BASE}/branches`);
+        const branches = await res.json();
+        const wrap = document.getElementById("branch-buttons");
+        wrap.innerHTML = "";
+        branches.forEach(b => {
+            const btn = document.createElement("button");
+            btn.className = "branch-btn px-8 py-4 bg-primary text-white font-bold rounded-lg shadow-sm hover:scale-[1.03] active:scale-95 transition-all text-body-lg";
+            btn.textContent = b.name;
+            btn.onclick = () => selectBranch(b.name);
+            wrap.appendChild(btn);
+        });
+    }
 
-function selectBranch(branch) {
-  currentBranch = branch;
-  document.getElementById('branch-gate').style.display = 'none';
-  document.getElementById('catalog').style.display = 'block';
-  document.getElementById('current-branch-name').textContent = branch.name;
-  loadProducts();
-}
+    function selectBranch(name) {
+        visitingBranch = name;
+        document.getElementById("branch-gate-overlay").classList.add("hidden");
+        document.getElementById("current-branch-pill").classList.remove("hidden");
+        document.getElementById("current-branch-name").textContent = name;
+        document.getElementById("current-branch-name-mobile").textContent = name;
+        currentPage = 1;
+        loadProducts();
+    }
 
-function resetBranch() {
-  currentBranch = null;
-  document.getElementById('catalog').style.display = 'none';
-  document.getElementById('branch-gate').style.display = 'block';
-}
+    function switchBranch() {
+        visitingBranch = null;
+        document.getElementById("branch-gate-overlay").classList.remove("hidden");
+        closeMobileNav();
+    }
+    document.getElementById("switch-branch-btn").onclick = switchBranch;
+    document.getElementById("switch-branch-btn-mobile").onclick = switchBranch;
 
-async function loadProducts() {
-  const params = new URLSearchParams();
-  params.set('visiting_branch_id', currentBranch.id);
-  const search = document.getElementById('search').value.trim();
-  const sort = document.getElementById('sort').value;
-  const minPrice = document.getElementById('min_price').value;
-  const maxPrice = document.getElementById('max_price').value;
-  const fabric = document.getElementById('fabric').value.trim();
-  const foamType = document.getElementById('foam_type').value.trim();
-  if (search) params.set('search', search);
-  if (sort) params.set('sort', sort);
-  if (minPrice) params.set('min_price', minPrice);
-  if (maxPrice) params.set('max_price', maxPrice);
-  if (fabric) params.set('fabric', fabric);
-  if (foamType) params.set('foam_type', foamType);
+    // -----------------------------------------------------------
+    // Mobile nav drawer (hamburger menu)
+    // -----------------------------------------------------------
+    function openMobileNav() {
+        document.getElementById("mobile-nav-overlay").classList.remove("hidden");
+        document.getElementById("mobile-nav-drawer").classList.remove("translate-x-full");
+    }
+    function closeMobileNav() {
+        document.getElementById("mobile-nav-overlay").classList.add("hidden");
+        document.getElementById("mobile-nav-drawer").classList.add("translate-x-full");
+    }
+    document.getElementById("hamburger-btn").onclick = openMobileNav;
+    document.getElementById("mobile-nav-close").onclick = closeMobileNav;
+    document.getElementById("mobile-nav-overlay").onclick = closeMobileNav;
 
-  const res = await fetch(`${API_BASE}/products?${params.toString()}`);
-  const data = await res.json();
-  renderGrid(data.items);
-}
+    // -----------------------------------------------------------
+    // Filters drawer (used at every screen size)
+    // -----------------------------------------------------------
+    function openFiltersDrawer() {
+        document.getElementById("filters-overlay").classList.remove("hidden");
+        document.getElementById("filters-drawer").classList.remove("-translate-x-full");
+    }
+    function closeFiltersDrawer() {
+        document.getElementById("filters-overlay").classList.add("hidden");
+        document.getElementById("filters-drawer").classList.add("-translate-x-full");
+    }
+    document.getElementById("open-filters-btn").onclick = openFiltersDrawer;
+    document.getElementById("filters-close").onclick = closeFiltersDrawer;
+    document.getElementById("filters-overlay").onclick = closeFiltersDrawer;
 
-function renderGrid(items) {
-  const grid = document.getElementById('grid');
-  const empty = document.getElementById('empty');
-  grid.innerHTML = '';
-  empty.style.display = items.length === 0 ? 'block' : 'none';
+    // -----------------------------------------------------------
+    // Filters UI wiring
+    // -----------------------------------------------------------
+    document.querySelectorAll(".tier-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const alreadyActive = btn.classList.contains("active");
+            document.querySelectorAll(".tier-btn").forEach(b => b.classList.remove("active"));
+            if (!alreadyActive) btn.classList.add("active");
+        });
+    });
 
-  items.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.onclick = () => openProduct(p.id);
-    const stockClass = p.stock_status === 'In Stock' ? 'in-stock' : 'made-to-order';
-    card.innerHTML = `
-      <img src="${imgUrl(p.primary_image)}" alt="${p.name}">
-      <div class="card-body">
-        <h3>${p.name}</h3>
-        <div class="price">₹${p.price.toLocaleString('en-IN')}</div>
-        <div class="branch-tag">${p.branch.name} branch</div>
-        <span class="stock ${stockClass}">${p.stock_status}</span>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
+    document.querySelectorAll(".fabric-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const alreadyActive = btn.classList.contains("active");
+            document.querySelectorAll(".fabric-btn").forEach(b => b.classList.remove("active"));
+            if (!alreadyActive) btn.classList.add("active");
+        });
+    });
 
-function imgUrl(path) {
-  if (!path) return 'https://placehold.co/400x300?text=Sofa';
-  return path.startsWith('http') ? path : `${API_BASE.replace('/api/v1', '')}${path}`;
-}
+    document.getElementById("apply-filters-btn").addEventListener("click", () => {
+        currentPage = 1;
+        loadProducts();
+        closeFiltersDrawer();
+    });
+    document.getElementById("search-input").addEventListener("keyup", (e) => {
+        if (e.key === "Enter") { currentPage = 1; loadProducts(); }
+    });
+    document.getElementById("sort-select").addEventListener("change", () => {
+        currentPage = 1;
+        loadProducts();
+    });
 
-async function openProduct(id) {
-  const res = await fetch(`${API_BASE}/products/${id}`);
-  const p = await res.json();
-  const modal = document.getElementById('modal');
-  const stockClass = p.stock_status === 'In Stock' ? 'in-stock' : 'made-to-order';
+    function getActiveFabric() {
+        const active = document.querySelector(".fabric-btn.active");
+        return active ? active.dataset.fabric : null;
+    }
+    function getActivePriceTier() {
+        const active = document.querySelector(".tier-btn.active");
+        return active ? active.dataset.tier : null;
+    }
+    function getActiveFoamType() {
+        const checked = document.querySelector('input[name="foam_type"]:checked');
+        return checked && checked.value ? checked.value : null;
+    }
 
-  const imagesHtml = (p.images.length ? p.images : [{image_url: null}])
-    .map(img => `<img src="${imgUrl(img.image_url)}">`).join('');
+    // -----------------------------------------------------------
+    // Fetch + render products
+    // -----------------------------------------------------------
+    async function loadProducts() {
+        const grid = document.getElementById("product-grid");
+        const empty = document.getElementById("empty-state");
+        const loading = document.getElementById("loading-state");
+        grid.innerHTML = "";
+        empty.classList.add("hidden");
+        loading.classList.remove("hidden");
 
-  const colorsHtml = (p.available_colors || [])
-    .map(c => `<span class="color-chip">${c}</span>`).join('');
+        const params = new URLSearchParams();
+        params.set("visiting_branch", visitingBranch);
+        params.set("page", currentPage);
+        params.set("page_size", PAGE_SIZE);
 
-  modal.innerHTML = `
-    <button class="close" onclick="closeModal()">&times;</button>
-    <div class="images">${imagesHtml}</div>
-    <h2>${p.name}</h2>
-    <div class="price">₹${p.price.toLocaleString('en-IN')}</div>
-    <span class="stock ${stockClass}">${p.stock_status}</span>
-    <p>${p.description || ''}</p>
-    <div class="colors">${colorsHtml}</div>
-    <table>
-      <tr><td>Branch</td><td>${p.branch.name}</td></tr>
-      <tr><td>Stock Count</td><td>${p.stock_count}</td></tr>
-      <tr><td>Dimensions (L x W x H)</td><td>${p.length_cm ?? '-'} x ${p.width_cm ?? '-'} x ${p.height_cm ?? '-'} cm</td></tr>
-      <tr><td>Seating Capacity</td><td>${p.seating_capacity ?? '-'}</td></tr>
-      <tr><td>Foam Thickness</td><td>${p.foam_thickness_cm ?? '-'} cm</td></tr>
-      <tr><td>Foam Type</td><td>${p.foam_type ?? '-'}</td></tr>
-      <tr><td>Fabric Material</td><td>${p.fabric_material ?? '-'}</td></tr>
-      <tr><td>Frame Material</td><td>${p.frame_material ?? '-'}</td></tr>
-      <tr><td>Color</td><td>${p.color ?? '-'}</td></tr>
-      <tr><td>Warranty</td><td>${p.warranty ?? '-'}</td></tr>
-    </table>
-  `;
-  document.getElementById('overlay').style.display = 'flex';
-}
+        const search = document.getElementById("search-input").value.trim();
+        if (search) params.set("search", search);
 
-function closeModal() {
-  document.getElementById('overlay').style.display = 'none';
-}
+        const priceTier = getActivePriceTier();
+        if (priceTier) params.set("price_tier", priceTier);
 
-init();
+        const fabric = getActiveFabric();
+        if (fabric) params.set("fabric", fabric);
+
+        const foamType = getActiveFoamType();
+        if (foamType) params.set("foam_type", foamType);
+
+        const sortMap = {
+            newest: "newest",
+            oldest: "oldest",
+            price_low_to_high: "price_low_to_high",
+            price_high_to_low: "price_high_to_low",
+        };
+        params.set("sort", sortMap[document.getElementById("sort-select").value] || "newest");
+
+        const res = await fetch(`${API_BASE}/products?${params.toString()}`);
+        const data = await res.json();
+
+        loading.classList.add("hidden");
+
+        if (!data.items.length) {
+            empty.classList.remove("hidden");
+            renderPagination(0, 0);
+            return;
+        }
+
+        data.items.forEach(p => grid.appendChild(renderCard(p)));
+        renderPagination(data.total, data.page_size);
+    }
+
+    function imgUrl(path) {
+        if (!path) return "https://placehold.co/600x750?text=Sofa";
+        return path.startsWith("http") ? path : `${API_ROOT}${path}`;
+    }
+
+    function renderCard(p) {
+        const article = document.createElement("article");
+        article.className = "glass-card rounded-3xl overflow-hidden group cursor-pointer";
+        article.onclick = () => openProductModal(p.id);
+
+        const badgeClass = p.stock_status === "In Stock"
+            ? "bg-green-100 text-green-800"
+            : "bg-orange-100 text-orange-800";
+
+        const tierClass = {
+            Low: "bg-blue-50 text-blue-700",
+            Moderate: "bg-purple-50 text-purple-700",
+            Premium: "bg-amber-50 text-amber-700",
+        }[p.price_tier] || "bg-surface-container text-secondary";
+
+        article.innerHTML = `
+            <div class="aspect-[4/5] relative overflow-hidden bg-surface-container">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                     src="${imgUrl(p.primary_image)}" alt="${p.name}"
+                     onerror="this.onerror=null;this.src='https://placehold.co/600x750?text=Sofa';"/>
+                <div class="absolute top-4 left-4">
+                    <span class="px-3 py-1 ${badgeClass} text-label-sm rounded-full font-bold">${p.stock_status}</span>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-headline-md font-headline-md text-primary">${p.name}</h3>
+                    <span class="px-3 py-1 ${tierClass} text-label-sm rounded-full font-bold">${p.price_tier}</span>
+                </div>
+                <div class="flex items-center gap-2 text-secondary mb-6">
+                    <span class="material-symbols-outlined text-sm">location_on</span>
+                    <span class="text-label-sm">${p.branch.name} Branch</span>
+                </div>
+                <button class="w-full py-3 border border-primary text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all duration-300">
+                    View Details
+                </button>
+            </div>
+        `;
+        return article;
+    }
+
+    function renderPagination(total, pageSize) {
+        const wrap = document.getElementById("pagination");
+        wrap.innerHTML = "";
+        const totalPages = Math.max(1, Math.ceil(total / pageSize));
+        if (totalPages <= 1) return;
+
+        const makeBtn = (label, page, isActive = false, disabled = false) => {
+            const btn = document.createElement("button");
+            btn.className = isActive
+                ? "w-12 h-12 flex items-center justify-center rounded-full bg-primary text-white font-bold"
+                : "w-12 h-12 flex items-center justify-center rounded-full border border-outline-variant hover:bg-primary hover:text-white transition-all";
+            btn.textContent = label;
+            if (disabled) btn.disabled = true;
+            else btn.onclick = () => { currentPage = page; loadProducts(); };
+            return btn;
+        };
+
+        wrap.appendChild(makeBtn("‹", currentPage - 1, false, currentPage <= 1));
+        for (let i = 1; i <= totalPages; i++) {
+            wrap.appendChild(makeBtn(String(i), i, i === currentPage));
+        }
+        wrap.appendChild(makeBtn("›", currentPage + 1, false, currentPage >= totalPages));
+    }
+
+    // -----------------------------------------------------------
+    // Product detail modal
+    // -----------------------------------------------------------
+    async function openProductModal(id) {
+        const res = await fetch(`${API_BASE}/products/${id}`);
+        const p = await res.json();
+
+        const images = p.images.length
+            ? p.images.map(img => `<img src="${imgUrl(img.image_url)}" onerror="this.onerror=null;this.src='https://placehold.co/600x750?text=Sofa';" />`).join("")
+            : `<img src="${imgUrl(null)}" />`;
+
+        const colors = (p.available_colors || [])
+            .map(c => `<span class="color-chip">${c}</span>`).join("");
+
+        const badgeClass = p.stock_status === "In Stock"
+            ? "bg-green-100 text-green-800"
+            : "bg-orange-100 text-orange-800";
+
+        const tierClass = {
+            Low: "bg-blue-50 text-blue-700",
+            Moderate: "bg-purple-50 text-purple-700",
+            Premium: "bg-amber-50 text-amber-700",
+        }[p.price_tier] || "bg-surface-container text-secondary";
+
+        document.getElementById("modal-body").innerHTML = `
+            <div class="modal-images">${images}</div>
+            <div class="flex justify-between items-start mb-2">
+                <h2 class="text-headline-lg font-headline-lg text-primary">${p.name}</h2>
+                <span class="px-3 py-1 ${tierClass} text-label-sm rounded-full font-bold">${p.price_tier}</span>
+            </div>
+            <span class="px-3 py-1 ${badgeClass} text-label-sm rounded-full font-bold">${p.stock_status}</span>
+            <p class="text-body-md text-secondary mt-4">${p.description || ""}</p>
+            <div class="mt-3">${colors}</div>
+            <table class="spec-table">
+                <tr><td>Branch</td><td>${p.branch.name}</td></tr>
+                <tr><td>Dimensions (L×W×H)</td><td>${p.length_in ?? "-"} × ${p.width_in ?? "-"} × ${p.height_in ?? "-"} in</td></tr>
+                <tr><td>Seating Capacity</td><td>${p.seating_capacity ?? "-"}</td></tr>
+                <tr><td>Foam Thickness</td><td>${p.foam_thickness_in ?? "-"} in</td></tr>
+                <tr><td>Foam Type</td><td>${p.foam_type ?? "-"}</td></tr>
+                <tr><td>Fabric Material</td><td>${p.fabric_material ?? "-"}</td></tr>
+                <tr><td>Frame Material</td><td>${p.frame_material ?? "-"}</td></tr>
+                <tr><td>Color</td><td>${p.color ?? "-"}</td></tr>
+                <tr><td>Warranty</td><td>${p.warranty ?? "-"}</td></tr>
+                <tr><td>Stock Count</td><td>${p.stock_count}</td></tr>
+            </table>
+        `;
+        document.getElementById("product-modal-overlay").classList.add("open");
+    }
+
+    document.getElementById("modal-close-btn").onclick = () =>
+        document.getElementById("product-modal-overlay").classList.remove("open");
+    document.getElementById("product-modal-overlay").addEventListener("click", (e) => {
+        if (e.target.id === "product-modal-overlay") e.currentTarget.classList.remove("open");
+    });
+
+    // -----------------------------------------------------------
+    // Boot
+    // -----------------------------------------------------------
+    loadBranches();
 </script>
-</body>
-</html>
+</body></html>

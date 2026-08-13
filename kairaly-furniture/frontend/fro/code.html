@@ -373,20 +373,37 @@
 </ul>
 </div>
 <div>
-<h4 class="text-label-sm uppercase tracking-widest text-on-surface mb-6 font-bold">Newsletter</h4>
-<p class="text-label-sm text-secondary mb-4">Join our community for design inspiration.</p>
-<div class="flex gap-2">
-<input class="bg-surface border-none rounded-lg px-4 py-2 w-full focus:ring-2 focus:ring-primary-container" placeholder="Email address" type="email"/>
-<button class="bg-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-primary/90 transition-all">Join</button>
+<h4 class="text-label-sm uppercase tracking-widest text-on-surface mb-6 font-bold">Contact Us</h4>
+<ul class="space-y-3 text-body-md">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-lg text-primary flex-shrink-0">mail</span>
+<a class="text-secondary hover:text-primary transition-colors break-all" href="mailto:newkairalynewhomes@gmail.com">newkairalynewhomes@gmail.com</a>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-lg text-primary flex-shrink-0">call</span>
+<div class="flex flex-col text-secondary">
+<a class="hover:text-primary transition-colors" href="tel:+919847215064">+91 98472 15064</a>
+<a class="hover:text-primary transition-colors" href="tel:+919447002257">+91 94470 02257</a>
+<a class="hover:text-primary transition-colors" href="tel:+919745665718">+91 97456 65718</a>
 </div>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg text-primary flex-shrink-0">chat</span>
+<a class="text-secondary hover:text-primary transition-colors" href="https://wa.me/919847215064" target="_blank" rel="noopener">WhatsApp Us</a>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg text-primary flex-shrink-0">photo_camera</span>
+<a class="text-secondary hover:text-primary transition-colors" href="https://www.instagram.com/kairalyfurniture" target="_blank" rel="noopener">@kairalyfurniture</a>
+</li>
+</ul>
 </div>
 </div>
 <div class="max-w-container-max mx-auto px-margin-desktop mt-20 pt-10 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4 text-label-sm text-secondary">
 <span>© 2024 Kairaly Furniture. Modern Living. All rights reserved.</span>
 <div class="flex gap-6">
-<a class="hover:text-primary transition-colors" href="#">Instagram</a>
-<a class="hover:text-primary transition-colors" href="#">Pinterest</a>
-<a class="hover:text-primary transition-colors" href="#">LinkedIn</a>
+<a class="hover:text-primary transition-colors" href="https://www.instagram.com/kairalyfurniture" target="_blank" rel="noopener">Instagram</a>
+<a class="hover:text-primary transition-colors" href="https://wa.me/919847215064" target="_blank" rel="noopener">WhatsApp</a>
+<a class="hover:text-primary transition-colors" href="mailto:newkairalynewhomes@gmail.com">Email</a>
 </div>
 </div>
 </footer>
@@ -406,8 +423,15 @@
     // Config — change this if your backend runs somewhere other than
     // localhost:8000
     // =================================================================
-    const API_BASE = "https://cataloq-for-furniture.onrender.com/api/v1";
-    const API_ROOT = "https://cataloq-for-furniture.onrender.com";
+    // Auto-detects whether the page is running locally or live, so you never
+    // need to manually swap this when testing on your Mac vs the real site.
+    // Covers both "double-click to open" (file://) and "served via localhost".
+    const isLocal =
+        window.location.protocol === "file:" ||
+        ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    const API_ROOT = isLocal ? "http://localhost:8000" : "https://cataloq-for-furniture.onrender.com";
+    const API_BASE = `${API_ROOT}/api/v1`;
+
     let visitingBranch = null; // e.g. "Choondi"
     let currentPage = 1;
     const PAGE_SIZE = 9;
